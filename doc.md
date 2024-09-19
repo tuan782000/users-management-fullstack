@@ -761,3 +761,94 @@ Tham số:
 
 ClaimsPrincipal User: Thông tin người dùng hiện tại (được lấy từ token JWT).
 Kết quả trả về: Một tập hợp các đối tượng GetMessageDto, chứa thông tin về tin nhắn của người dùng hiện tại.
+
+# Add and Implement LogService
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using backend_dotnet7.Core.Dtos.Log;
+using backend_dotnet7.Core.Interfaces;
+
+namespace backend_dotnet7.Core.Services
+{
+    public class LogService : ILogService
+    {
+        public Task<IEnumerable<GetLogDto>> GetLogsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<GetLogDto>> GetMyLogsAsync(ClaimsPrincipal User)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveNewLog(string UserName, string Description)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+```
+
+LogService là một lớp (class) kế thừa (hoặc chính xác hơn là thực hiện) interface ILogService. Lớp này định nghĩa các phương thức cần thiết để làm việc với hệ thống log theo cách riêng của nó. Hiện tại, các phương thức trong LogService vẫn chưa được cài đặt chi tiết và sử dụng throw new NotImplementedException(); để báo rằng chúng chưa được triển khai.
+
+Kế thừa interface (ILogService):
+Khi lớp LogService triển khai (implement) interface ILogService, nó phải cung cấp các triển khai cụ thể cho tất cả các phương thức đã định nghĩa trong interface.
+Interface ILogService định nghĩa ba phương thức: SaveNewLog, GetLogsAsync, và GetMyLogsAsync. Vì vậy, lớp LogService cần cung cấp cách thực hiện cho các phương thức này.
+Các phương thức trong LogService:
+Task<IEnumerable<GetLogDto>> GetLogsAsync():
+
+Lớp LogService cần triển khai logic để lấy tất cả các log từ hệ thống.
+Hiện tại, phương thức này chưa được thực hiện (vẫn đang sử dụng throw new NotImplementedException();).
+Task<IEnumerable<GetLogDto>> GetMyLogsAsync(ClaimsPrincipal User):
+
+Phương thức này sẽ trả về các log chỉ liên quan đến người dùng hiện tại (được xác định thông qua đối tượng ClaimsPrincipal).
+Cũng như phương thức trước, chưa có logic thực thi cho phương thức này.
+Task SaveNewLog(string UserName, string Description):
+
+Phương thức này dùng để lưu một log mới với tên người dùng và mô tả sự kiện.
+Chưa có cài đặt chi tiết cho phương thức này.
+
+```c#
+        // Lưu Log lại
+        public async Task SaveNewLog(string UserName, string Description)
+        {
+            var newLog = new Log(){
+                UserName = UserName,
+                Description = Description
+            };
+
+            await _context.Logs.AddAsync(newLog);
+            await _context.SaveChangesAsync();
+        }
+
+        // Lấy ra danh sách logs để theo ngày, mô tả, name sắp xếp kế quả theo thứ tự giảm dần của ngày - kết quả trả về là danh sách
+        public async Task<IEnumerable<GetLogDto>> GetLogsAsync()
+        {
+            var logs = await _context.Logs.Select(q => new GetLogDto {
+                CreatedAt = q.CreatedAt,
+                Description = q.Description,
+                UserName = q.UserName
+            }).OrderByDescending(q => q.CreatedAt).ToListAsync();
+             return logs;
+        }
+
+        public async Task<IEnumerable<GetLogDto>> GetMyLogsAsync(ClaimsPrincipal User)
+        {
+            var logs = await _context.Logs
+            .Where(q =>  q.UserName == User.Identity.Name)
+            .Select(q => new GetLogDto {
+                CreatedAt = q.CreatedAt,
+                Description = q.Description,
+                UserName = q.UserName
+            }).OrderByDescending(q => q.CreatedAt).ToListAsync();
+             return logs;
+        }
+```
+
+Đang sử dụng cú pháp linq
