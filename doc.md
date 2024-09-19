@@ -595,3 +595,9 @@ builder.Services
    IssuerSigningKey: Chìa khóa bí mật (secret key) để mã hóa và giải mã token, được cấu hình từ JWT:Secret.
    Mục đích của đoạn mã:
    Đoạn mã trên dùng để thiết lập hệ thống xác thực cho ứng dụng bằng JWT. Khi một yêu cầu (request) đến, token từ phía client sẽ được xác thực dựa trên các thông số đã cấu hình như Issuer, Audience, và SigningKey. Nếu token hợp lệ, yêu cầu sẽ được chấp nhận và xử lý.
+
+ValidIssuer Issuer là đơn vị phát hành token. Ở đây, giá trị là URL của server phát hành token,
+
+ValidAudience Audience là đối tượng được cấp quyền sử dụng token.
+
+Secret là chìa khóa bí mật (secret key) được sử dụng để mã hóa và giải mã token.
