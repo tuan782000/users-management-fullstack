@@ -191,7 +191,7 @@ namespace backend_dotnet7.Core.Entities
     public class Message:BaseEntity<long>
     {
         public string SenderUserName { get; set; }
-        public string ReplierUserName { get; set;}
+        public string ReceiverUserName { get; set;}
         public string Text { get; set; }
     }
 }
@@ -852,3 +852,89 @@ Chưa có cài đặt chi tiết cho phương thức này.
 ```
 
 Đang sử dụng cú pháp linq
+
+#
+
+// Dependency Injection này gọi là DI quản lý và cung cấp các đối tượng
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+Interface (Định nghĩa các hàm 1 lớp service sẽ thực thi) khai báo hàm - Service (nơi thực thi cụ thể tính năng đó) nơi viết code cụ thể
+
+ví dụ
+
+ILogService khai báo có bao nhiêu tính năng
+
+LogService sẽ ánh xạ và viết ra đầy đủ các bước mà tính năng đó sẽ hoạt động
+
+```c#
+
+        #region GetMessagesAsync
+        public async Task<IEnumerable<GetMessageDto>> GetMessageAsync()
+        {
+            var messages = await _context.Messages
+            .Select(q => new GetMessageDto()
+            {
+                Id = q.Id,
+                SenderUserName = q.SenderUserName,
+                ReceiverUserName = q.ReceiverUserName,
+                Text = q.Text,
+                CreatedAt = q.CreatedAt
+            })
+            .OrderByDescending(q => q.CreatedAt)
+            .ToListAsync();
+
+        return messages;
+        }
+        #endregion
+
+        #region GetMyMessagesAsync
+        public async Task<IEnumerable<GetMessageDto>> GetMyMessageAsync(ClaimsPrincipal User)
+        {
+            var loggedInUser = User.Identity.Name;
+
+            var messages = await _context.Messages
+                .Where(q => q.SenderUserName == loggedInUser || q.ReceiverUserName == loggedInUser)
+            .Select(q => new GetMessageDto()
+            {
+                Id = q.Id,
+                SenderUserName = q.SenderUserName,
+                ReceiverUserName = q.ReceiverUserName,
+                Text = q.Text,
+                CreatedAt = q.CreatedAt
+            })
+            .OrderByDescending(q => q.CreatedAt)
+            .ToListAsync();
+
+        return messages;
+        }
+         #endregion
+```
+
+1. GetMessagesAsync
+   Mục đích: Hàm này được sử dụng để lấy tất cả các tin nhắn từ cơ sở dữ liệu, sắp xếp theo thời gian tin nhắn được tạo (CreatedAt) theo thứ tự giảm dần.
+   Cách hoạt động:
+   Dùng \_context.Messages để truy vấn dữ liệu từ bảng Messages.
+   Sử dụng Select để chuyển đổi các tin nhắn từ cơ sở dữ liệu thành đối tượng GetMessageDto.
+   Sắp xếp các tin nhắn theo CreatedAt giảm dần (OrderByDescending).
+   Cuối cùng, gọi ToListAsync() để lấy danh sách tin nhắn dưới dạng danh sách bất đồng bộ (async list).
+
+2. GetMyMessageAsync
+   Mục đích: Hàm này được sử dụng để lấy các tin nhắn mà người dùng hiện tại đã gửi hoặc nhận. Người dùng hiện tại được lấy từ đối tượng ClaimsPrincipal (đối tượng chứa thông tin về người dùng đăng nhập).
+   Cách hoạt động:
+   Dùng User.Identity.Name để lấy tên người dùng hiện tại.
+   Sử dụng \_context.Messages để truy vấn tin nhắn trong cơ sở dữ liệu.
+   Dùng Where để lọc các tin nhắn có SenderUserName hoặc ReceiverUserName là tên người dùng hiện tại.
+   Sử dụng Select để chuyển đổi các tin nhắn thành đối tượng GetMessageDto.
+   Sắp xếp các tin nhắn theo CreatedAt theo thứ tự giảm dần.
+   Cuối cùng, trả về danh sách các tin nhắn tương ứng với người dùng hiện tại.
+   Tóm lại:
+   GetMessagesAsync lấy tất cả các tin nhắn.
+   GetMyMessageAsync lấy các tin nhắn liên quan đến người dùng đăng nhập (đã gửi hoặc nhận).
+
+    Từ khóa new trong C# được sử dụng để tạo ra một thể hiện (instance) mới của một lớp hoặc kiểu dữ liệu. Nó khởi tạo đối tượng và gọi hàm dựng (constructor) của lớp đó.
+
+    new GetMessageDto() có nghĩa là bạn đang tạo một đối tượng mới thuộc kiểu GetMessageDto. Sau khi tạo, bạn gán các giá trị từ đối tượng q (đại diện cho một bản ghi từ bảng Messages trong cơ sở dữ liệu) vào các thuộc tính tương ứng của đối tượng GetMessageDto này (như Id, SenderUserName, ReceiverUserName, Text, và CreatedAt).
+
+    Tóm lại, new trong ngữ cảnh này dùng để tạo một thể hiện mới của lớp GetMessageDto để chứa dữ liệu tin nhắn.

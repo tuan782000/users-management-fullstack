@@ -36,7 +36,7 @@ namespace backend_dotnet7.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReplierUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReceiverUserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

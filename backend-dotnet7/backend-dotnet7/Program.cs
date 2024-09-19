@@ -2,6 +2,8 @@
 using System.Text.Json.Serialization;
 using backend_dotnet7.Core.DbContext;
 using backend_dotnet7.Core.Entities;
+using backend_dotnet7.Core.Interfaces;
+using backend_dotnet7.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +26,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 });
 
 // Dependency Injection
-
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 // Add Indetity
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()

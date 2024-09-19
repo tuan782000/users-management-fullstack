@@ -284,7 +284,7 @@ namespace backend_dotnet7.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ReplierUserName")
+                    b.Property<string>("ReceiverUserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
