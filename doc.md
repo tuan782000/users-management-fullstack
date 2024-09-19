@@ -1,9 +1,9 @@
 ﻿# We use these packages:
 
-- "Microsoft.AspNetCore.Authentication.JwtBearer"
-- "Microsoft.AspNetCore.Identity.EntityFrameworkCore"
-- "Microsoft.EntityFrameworkCore.SqlServer"
-- "Microsoft.EntityFrameworkCore.Tools"
+-   "Microsoft.AspNetCore.Authentication.JwtBearer"
+-   "Microsoft.AspNetCore.Identity.EntityFrameworkCore"
+-   "Microsoft.EntityFrameworkCore.SqlServer"
+-   "Microsoft.EntityFrameworkCore.Tools"
 
 # Cấu hình cơ sở dữ liệu:
 
@@ -11,37 +11,37 @@ appsettings.json
 
 1. Constants:
 
-- Lưu trữ các giá trị hằng số (constants) được sử dụng trong toàn bộ dự án. Ví dụ như chuỗi kết nối cơ sở dữ liệu,
-  các giá trị cố định hoặc chuỗi xác định vai trò, quyền hạn.
+-   Lưu trữ các giá trị hằng số (constants) được sử dụng trong toàn bộ dự án. Ví dụ như chuỗi kết nối cơ sở dữ liệu,
+    các giá trị cố định hoặc chuỗi xác định vai trò, quyền hạn.
 
-- Điều này giúp mã nguồn trở nên dễ bảo trì hơn khi cần thay đổi các giá trị cố định.
+-   Điều này giúp mã nguồn trở nên dễ bảo trì hơn khi cần thay đổi các giá trị cố định.
 
 2. DbContext:
 
-- Chứa lớp DbContext để quản lý và tương tác với cơ sở dữ liệu thông qua Entity Framework Core.
-  Lớp này đại diện cho phiên làm việc với cơ sở dữ liệu, bao gồm các bộ truy vấn và cập nhật.
+-   Chứa lớp DbContext để quản lý và tương tác với cơ sở dữ liệu thông qua Entity Framework Core.
+    Lớp này đại diện cho phiên làm việc với cơ sở dữ liệu, bao gồm các bộ truy vấn và cập nhật.
 
-- Định nghĩa các DbSet<T> cho các thực thể (entities) trong dự án.
+-   Định nghĩa các DbSet<T> cho các thực thể (entities) trong dự án.
 
 3. Dtos (Data Transfer Objects):
 
-- Chứa các lớp DTO, được dùng để chuyển dữ liệu giữa các tầng của ứng dụng (ví dụ từ API đến service).
-  DTO giúp đảm bảo dữ liệu được truyền một cách an toàn và dễ kiểm soát hơn so với việc dùng trực tiếp các thực thể (entities).
+-   Chứa các lớp DTO, được dùng để chuyển dữ liệu giữa các tầng của ứng dụng (ví dụ từ API đến service).
+    DTO giúp đảm bảo dữ liệu được truyền một cách an toàn và dễ kiểm soát hơn so với việc dùng trực tiếp các thực thể (entities).
 
 4. Entities:
 
-- Chứa các lớp thực thể (entities), đại diện cho các bảng trong cơ sở dữ liệu.
-  Mỗi thực thể tương ứng với một bảng và chứa các thuộc tính (fields) tương ứng với các cột trong bảng đó.
+-   Chứa các lớp thực thể (entities), đại diện cho các bảng trong cơ sở dữ liệu.
+    Mỗi thực thể tương ứng với một bảng và chứa các thuộc tính (fields) tương ứng với các cột trong bảng đó.
 
 5. Interfaces:
 
-- Chứa các interface (giao diện) định nghĩa các hợp đồng (contracts) cho các service hoặc repository.
-  Việc sử dụng interface giúp việc quản lý phụ thuộc dễ dàng hơn và hỗ trợ tiêm phụ thuộc (dependency injection).
+-   Chứa các interface (giao diện) định nghĩa các hợp đồng (contracts) cho các service hoặc repository.
+    Việc sử dụng interface giúp việc quản lý phụ thuộc dễ dàng hơn và hỗ trợ tiêm phụ thuộc (dependency injection).
 
 6. Services:
 
-- Chứa các lớp service, cung cấp logic nghiệp vụ của ứng dụng. Các service sẽ thực thi các interface được định nghĩa trong thư mục Interfaces.
-  Đây là nơi các tác vụ chính như xử lý dữ liệu, tương tác với repository và gọi các phương thức liên quan được thực hiện.
+-   Chứa các lớp service, cung cấp logic nghiệp vụ của ứng dụng. Các service sẽ thực thi các interface được định nghĩa trong thư mục Interfaces.
+    Đây là nơi các tác vụ chính như xử lý dữ liệu, tương tác với repository và gọi các phương thức liên quan được thực hiện.
 
 # Create entities
 
@@ -71,11 +71,11 @@ IdentityUser:
 
 IdentityUser là lớp có sẵn trong ASP.NET Core Identity, cung cấp các thuộc tính và chức năng cần thiết để quản lý người dùng. Nó bao gồm các thuộc tính mặc định như:
 
-- UserName: Tên người dùng.
-- Email: Địa chỉ email.
-- PhoneNumber: Số điện thoại.
-- PasswordHash: Mã băm mật khẩu.
-- Và nhiều thuộc tính khác liên quan đến việc quản lý danh tính người dùng.
+-   UserName: Tên người dùng.
+-   Email: Địa chỉ email.
+-   PhoneNumber: Số điện thoại.
+-   PasswordHash: Mã băm mật khẩu.
+-   Và nhiều thuộc tính khác liên quan đến việc quản lý danh tính người dùng.
 
 ```C#
 using System;
@@ -142,19 +142,19 @@ và việc sử dụng tham số kiểu TID giúp tạo ra một lớp linh ho�
 
 1. Tính tổng quát (Generics):
 
-- TID là một tham số kiểu cho phép bạn định nghĩa kiểu dữ liệu của thuộc tính Id khi kế thừa lớp BaseEnt.
+-   TID là một tham số kiểu cho phép bạn định nghĩa kiểu dữ liệu của thuộc tính Id khi kế thừa lớp BaseEnt.
 
-- Khi một lớp thực thể kế thừa từ BaseEnt, bạn có thể chỉ định kiểu dữ liệu cho Id dựa trên nhu cầu cụ thể (ví dụ: kiểu string cho GUID hoặc kiểu int cho số nguyên).
+-   Khi một lớp thực thể kế thừa từ BaseEnt, bạn có thể chỉ định kiểu dữ liệu cho Id dựa trên nhu cầu cụ thể (ví dụ: kiểu string cho GUID hoặc kiểu int cho số nguyên).
 
-  2.Tính linh hoạt:
+    2.Tính linh hoạt:
 
-- Bạn có thể sử dụng BaseEnt cho nhiều lớp khác nhau mà không cần định nghĩa lại thuộc tính Id với từng kiểu dữ liệu.
-  Điều này giúp bạn giảm bớt sự trùng lặp mã và quản lý các lớp kế thừa dễ dàng hơn.
+-   Bạn có thể sử dụng BaseEnt cho nhiều lớp khác nhau mà không cần định nghĩa lại thuộc tính Id với từng kiểu dữ liệu.
+    Điều này giúp bạn giảm bớt sự trùng lặp mã và quản lý các lớp kế thừa dễ dàng hơn.
 
-  3.Dễ dàng mở rộng:
+    3.Dễ dàng mở rộng:
 
-- Nếu có nhiều lớp thực thể với Id là các kiểu dữ liệu khác nhau (ví dụ: int, string, hoặc Guid),
-  bạn chỉ cần định nghĩa một lớp BaseEnt<TID>, và các lớp thực thể con sẽ kế thừa lớp này với kiểu dữ liệu Id phù hợp.
+-   Nếu có nhiều lớp thực thể với Id là các kiểu dữ liệu khác nhau (ví dụ: int, string, hoặc Guid),
+    bạn chỉ cần định nghĩa một lớp BaseEnt<TID>, và các lớp thực thể con sẽ kế thừa lớp này với kiểu dữ liệu Id phù hợp.
 
 # Sử dụng Entity chung để tạo thửEntity
 
@@ -311,3 +311,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 Sử dụng cú pháp
 
 Add-migration init
+
+database-update
+
+Hoặc
+
+dotnet ef migrations add init
+
+dotnet ef database update
+
+# Config Enums in Program.cs

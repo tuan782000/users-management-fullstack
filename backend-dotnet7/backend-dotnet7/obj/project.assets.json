@@ -3635,26 +3635,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/tuannguyen/.nuget/packages/": {}
+    "C:\\Users\\DELL\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tuannguyen/Documents/users-management-fullstack/backend-dotnet7/backend-dotnet7/backend-dotnet7.csproj",
+      "projectUniqueName": "C:\\Users\\DELL\\Desktop\\users-management-fullstack\\backend-dotnet7\\backend-dotnet7\\backend-dotnet7.csproj",
       "projectName": "backend-dotnet7",
-      "projectPath": "/Users/tuannguyen/Documents/users-management-fullstack/backend-dotnet7/backend-dotnet7/backend-dotnet7.csproj",
-      "packagesPath": "/Users/tuannguyen/.nuget/packages/",
-      "outputPath": "/Users/tuannguyen/Documents/users-management-fullstack/backend-dotnet7/backend-dotnet7/obj/",
+      "projectPath": "C:\\Users\\DELL\\Desktop\\users-management-fullstack\\backend-dotnet7\\backend-dotnet7\\backend-dotnet7.csproj",
+      "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\DELL\\Desktop\\users-management-fullstack\\backend-dotnet7\\backend-dotnet7\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/tuannguyen/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
-        "/usr/local/share/dotnet/sdk/7.0.317/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3667,6 +3667,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3723,7 +3728,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.317/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
