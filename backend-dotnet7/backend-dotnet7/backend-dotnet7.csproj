@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <None Remove="Controllers\" />
-    <None Remove="doc.md" />
     <None Remove="Core\" />
     <None Remove="Core\Constants\" />
     <None Remove="Core\Dtos\" />
@@ -41,8 +40,5 @@
     <Folder Include="Core\Entities\" />
     <Folder Include="Core\Interfaces\" />
     <Folder Include="Core\Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="doc.md" />
   </ItemGroup>
 </Project>

@@ -292,3 +292,22 @@ Các đoạn dưới đổi tên bảng mặc định lại thành theo ý mình
 # Kết nối đến sql server
 
 Mình sẽ vào Progran.cs để làm các đoạn code kết nối sql server
+
+appsetting.json
+
+"local": "Server=.;Database=UserManagmentFullStackDB;Trusted_Connection=true;TrustServerCertificate=true;MultipleActiveResultSets=true"
+
+program.cs
+
+Bổ sung đoạn sau
+
+```c#
+builder.Services.AddDbContext<ApplicationDbContext>(options => {
+    var connectionString = builder.Configuration.GetConnectionString("local");
+    options.UseSqlServer(connectionString);
+});
+```
+
+Sử dụng cú pháp
+
+Add-migration init
