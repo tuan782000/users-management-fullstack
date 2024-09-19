@@ -568,6 +568,15 @@ builder.Services
         };
     });
 
+
+
+
+
+    ....
+
+    app.UseAuthentication();
+
+
 ```
 
 ```json
@@ -601,3 +610,27 @@ ValidIssuer Issuer là đơn vị phát hành token. Ở đây, giá trị là U
 ValidAudience Audience là đối tượng được cấp quyền sử dụng token.
 
 Secret là chìa khóa bí mật (secret key) được sử dụng để mã hóa và giải mã token.
+
+# Tạo Controllers
+
+tạo AuthController
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+namespace backend_dotnet7.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+
+    }
+}
+```
+
+Tạo thử ...
