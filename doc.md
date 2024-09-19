@@ -516,3 +516,16 @@ namespace backend_dotnet7.Core.Constants
     }
 }
 ```
+
+# Add Identity
+
+```c#
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+```
+
+Cấu hình dịch vụ Identity với các lớp ApplicationUser và IndetityRole.
+
+ApplicationUser: lớp người dùng tùy chỉnh kế thừa IndetityUser và IndetityRole - liên quan cấu hình và token

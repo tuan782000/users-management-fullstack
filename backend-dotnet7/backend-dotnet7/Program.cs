@@ -1,5 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using backend_dotnet7.Core.DbContext;
+using backend_dotnet7.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 // Dependency Injection
 
 // Add Indetity
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Config Identity
 
