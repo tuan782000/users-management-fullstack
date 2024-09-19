@@ -634,3 +634,130 @@ namespace backend_dotnet7.Controllers
 ```
 
 Tạo thử ...
+
+# Interfaces
+
+IAuthService, chứa các phương thức liên quan đến xử lý xác thực (authentication) và quản lý người dùng. Đây là phần định nghĩa mà các lớp khác sẽ triển khai để thực hiện logic cụ thể. Hãy phân tích từng phương thức trong interface này:
+
+Task<GeneralServiceResponseDto> SeedRolesAsync()
+
+Phương thức này thực hiện việc khởi tạo (seed) các vai trò (roles) mặc định cho hệ thống.
+
+Kết quả trả về: Một đối tượng GeneralServiceResponseDto, chứa thông tin phản hồi về việc seed roles (thành công, thất bại, thông điệp).
+
+Task<GeneralServiceResponseDto> RegisterAsync(RegisterDto registerDto)
+
+Thực hiện việc đăng ký người dùng mới.
+
+Tham số đầu vào:
+
+    - RegisterDto registerDto: Chứa thông tin đăng ký của người dùng (tên, email, mật khẩu, v.v.).
+
+Kết quả trả về: Một GeneralServiceResponseDto để biết kết quả đăng ký (thành công hay thất bại).
+
+Task<LoginServiceResponseDto> LoginAsync(LoginDto loginDto)
+
+Xử lý đăng nhập người dùng.
+
+Tham số đầu vào:
+
+    - LoginDto loginDto: Chứa thông tin đăng nhập (tên đăng nhập, mật khẩu).
+
+Kết quả trả về: Một đối tượng LoginServiceResponseDto, chứa kết quả đăng nhập (JWT token, thông tin người dùng, v.v.).
+
+Task<GeneralServiceResponseDto> UpdateRolesAsync(ClaimsPrincipal User, UpdateRoleDto updateRoleDto)
+
+Thực hiện cập nhật vai trò (roles) của người dùng.
+
+Tham số đầu vào:
+
+    - ClaimsPrincipal User: Đối tượng người dùng hiện tại (dựa trên JWT token).
+
+    - UpdateRoleDto updateRoleDto: Chứa thông tin về vai trò mới của người dùng.
+
+Kết quả trả về: GeneralServiceResponseDto để biết kết quả cập nhật vai trò.
+
+Task<LoginServiceResponseDto> MeAsync(MeDto meDto) - Trả về thông tin cá nhân của người dùng đã đăng nhập.
+
+Tham số đầu vào:
+
+    - MeDto meDto: Dữ liệu có thể bao gồm thông tin yêu cầu (như ID người dùng).
+
+Kết quả trả về: LoginServiceResponseDto, chứa thông tin chi tiết của người dùng hiện tại.
+
+Task<IEnumerable<UserInfoResult>> GetUsersListAsync()
+
+    - Lấy danh sách tất cả người dùng.
+
+Kết quả trả về: Một danh sách đối tượng UserInfoResult, chứa thông tin người dùng.
+
+Task<UserInfoResult> GetUserDetailsByUserName(string userName)
+
+    - Lấy thông tin chi tiết của một người dùng dựa trên tên người dùng (userName).
+
+Tham số đầu vào:
+
+string userName: Tên người dùng để lấy thông tin.
+
+Kết quả trả về: Một đối tượng UserInfoResult chứa thông tin chi tiết của người dùng.
+
+Task<IEnumerable<string>> GetUsernameListAsync()
+
+    - Lấy danh sách các tên người dùng hiện có trong hệ thống.
+
+Kết quả trả về: Một danh sách các chuỗi (string), đại diện cho các tên người dùng.
+
+Tóm lại giống như metod: Task<Mong_muốn_kết_quả_trả_về> Tên_hàm(Tham_số_truyền_vào)
+
+**thể hiện tính trừu tượng (Abstraction)**
+
+1. Task SaveNewLog(string UserName, string Description)
+
+    - Lưu một log mới vào hệ thống.
+
+Tham số:
+UserName: Tên người dùng thực hiện hành động cần được lưu lại.
+Description: Mô tả sự kiện hoặc hành động cần lưu.
+
+Kết quả trả về: Không có kết quả trả về rõ ràng (trả về Task, có nghĩa là xử lý bất đồng bộ).
+
+2. Task<IEnumerable<GetLogDto>> GetLogsAsync()
+
+    - Lấy tất cả các log trong hệ thống.
+
+    Kết quả trả về: Một danh sách các đối tượng GetLogDto, chứa thông tin về các sự kiện đã được ghi nhận.
+
+3. Task<IEnumerable<GetLogDto>> GetMyLogsAsync(ClaimsPrincipal User)
+
+    - Lấy danh sách các log liên quan đến người dùng hiện tại.
+
+    Tham số:
+    ClaimsPrincipal User: Thông tin người dùng hiện tại (thường được lấy từ JWT token).
+
+    Kết quả trả về: Một danh sách các log (IEnumerable<GetLogDto>) liên quan đến người dùng này.
+
+một interface tên là IMessageService, dùng để quản lý các chức năng liên quan đến tin nhắn (message) của hệ thống. Dưới đây là mô tả các phương thức của interface theo cấu trúc OOP:
+
+1. Task<GeneralServiceResponseDto> CreateNewMessageAsync(ClaimsPrincipal User, CreateMessageDto createMessageDto)
+   Phương thức này dùng để tạo một tin nhắn mới.
+
+Tham số:
+ClaimsPrincipal User: Thông tin người dùng hiện tại (người tạo tin nhắn), được lấy từ token JWT.
+
+CreateMessageDto createMessageDto: Đối tượng chứa thông tin về nội dung tin nhắn cần tạo.
+Kết quả trả về: Trả về đối tượng GeneralServiceResponseDto để biết kết quả tạo tin nhắn (thành công hoặc thất bại).
+
+2. Task<IEnumerable<GetMessageDto>> GetMessageAsync()
+
+Lấy danh sách tất cả các tin nhắn.
+
+Kết quả trả về: Một tập hợp (IEnumerable) các đối tượng GetMessageDto, chứa thông tin về các tin nhắn trong hệ thống.
+
+3. Task<IEnumerable<GetMessageDto>> GetMyMessageAsync(ClaimsPrincipal User)
+
+Lấy danh sách các tin nhắn của người dùng hiện tại.
+
+Tham số:
+
+ClaimsPrincipal User: Thông tin người dùng hiện tại (được lấy từ token JWT).
+Kết quả trả về: Một tập hợp các đối tượng GetMessageDto, chứa thông tin về tin nhắn của người dùng hiện tại.
