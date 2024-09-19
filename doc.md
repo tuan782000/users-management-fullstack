@@ -321,3 +321,21 @@ dotnet ef migrations add init
 dotnet ef database update
 
 # Config Enums in Program.cs
+
+```c#
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+```
+
+.AddJsonOptions(options =>
+{
+options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+cho phép sử dụng enums
+
+cấu hình cho dự án có thể sử dụng được enums
