@@ -543,3 +543,55 @@ options.SignIn.RequireConfirmedAccount = false;
 options.SignIn.RequireConfirmedEmail = false;
 options.SignIn.RequireConfirmedPhoneNumber = false;
 });
+
+# Config JWT
+
+```c#
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+        };
+    });
+
+```
+
+```json
+ "JWT": {
+        "ValidIssuer": "https://localhost:7237",
+        "ValidAudience": "https://localhost:3000",
+        "Secret": "SDFASDdsfsdkfoi3249rfmASDFetofoip32094u32476tchSADAFi23o487kdjkjfh"
+    }
+```
+
+1. Cấu hình Authentication và JwtBearer
+   AddAuthentication: Cấu hình hệ thống xác thực cho ứng dụng.
+   DefaultScheme: Cấu hình mặc định cho hệ thống xác thực là sử dụng JWT Bearer (JwtBearerDefaults.AuthenticationScheme).
+   DefaultAuthenticateScheme: Cấu hình mặc định khi xác thực là dùng JWT.
+   DefaultChallengeScheme: Cấu hình mặc định khi gặp lỗi xác thực (thách thức), JWT sẽ được sử dụng để xử lý.
+2. Cấu hình JWT Bearer
+   AddJwtBearer: Thêm và cấu hình JWT Bearer vào hệ thống xác thực.
+   SaveToken = true: Chỉ ra rằng token đã xác thực sẽ được lưu lại trong HttpContext sau khi xác thực.
+   RequireHttpsMetadata = false: Không bắt buộc sử dụng HTTPS cho các yêu cầu (thường sử dụng trong môi trường phát triển, khi không cần mã hóa HTTPS).
+   TokenValidationParameters: Các thông số để xác thực token.
+   ValidateIssuer = true: Bắt buộc kiểm tra Issuer (nguồn phát hành token).
+   ValidateAudience = true: Bắt buộc kiểm tra Audience (người nhận token).
+   ValidIssuer: Xác định nguồn phát hành token hợp lệ (lấy từ cấu hình ứng dụng: JWT:ValidIssuer).
+   ValidAudience: Xác định người nhận hợp lệ của token (lấy từ cấu hình: JWT:ValidAudience).
+   IssuerSigningKey: Chìa khóa bí mật (secret key) để mã hóa và giải mã token, được cấu hình từ JWT:Secret.
+   Mục đích của đoạn mã:
+   Đoạn mã trên dùng để thiết lập hệ thống xác thực cho ứng dụng bằng JWT. Khi một yêu cầu (request) đến, token từ phía client sẽ được xác thực dựa trên các thông số đã cấu hình như Issuer, Audience, và SigningKey. Nếu token hợp lệ, yêu cầu sẽ được chấp nhận và xử lý.

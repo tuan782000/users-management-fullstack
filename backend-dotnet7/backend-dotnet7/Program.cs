@@ -1,8 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 using backend_dotnet7.Core.DbContext;
 using backend_dotnet7.Core.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,27 @@ builder.Services.Configure<IdentityOptions>(options => {
 });
 
 // Add AuthenticationSchema and JwtBearer
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+        };
+    });
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
