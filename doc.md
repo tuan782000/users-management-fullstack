@@ -339,3 +339,153 @@ options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 cho phép sử dụng enums
 
 cấu hình cho dự án có thể sử dụng được enums
+
+Tạo folder Auth trong Dtos
+
+LoginDto.cs
+
+Dùng cho dịch vụ đăng nhập
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class LoginDto
+    {
+        [Required(ErrorMessage = "Username is required")]
+        public string UserName { get; set; }
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+    }
+}
+```
+
+LoginServiceResponse.cs
+
+Phản hồi thông tin người dùng
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class LoginServiceResponseDto
+    {
+        public string NewToken { get; set; }
+        // this would be returned to front-end
+        public UserInfoResult UserInfo { get; set; }
+    }
+}
+```
+
+MeDto.cs
+
+Thông tin người dùng
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class MeDto
+    {
+        public string Token { get; set; }
+    }
+}
+```
+
+RegisterDto.cs
+
+Đăng ký
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class RegisterDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "User name is required")]
+        public string UserName { get; set; }
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+        public string Address { get; set; }
+    }
+}
+```
+
+UpdateRoleDto.cs
+
+Cập nhật role cho người dùng
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class UpdateRoleDto
+    {
+        [Required(ErrorMessage = "UserName is required")]
+        public string UserName { get; set; }
+        public RoleType NewRole { get; set; }
+    }
+
+    public enum RoleType {
+        ADMIN,
+        MANAGER,
+        USER
+    }
+}
+
+// 4 role trong dự án này
+// ADMIN MANAGER USER và OWNER - Nhưng vì OWNER cao nhất không hiển thị phía client nên chỉ cần 3 cái
+```
+
+UserInfoResult.cs
+
+kết quả cuối cùng
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace backend_dotnet7.Core.Dtos.Auth
+{
+    public class UserInfoResult
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+    }
+}
+```
