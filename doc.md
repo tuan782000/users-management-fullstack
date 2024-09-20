@@ -1197,3 +1197,5 @@ namespace backend_dotnet7.Controllers
     }
 }
 ```
+
+# Implement Message Controller

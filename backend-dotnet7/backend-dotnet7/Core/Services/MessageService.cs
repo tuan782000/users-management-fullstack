@@ -68,7 +68,7 @@ namespace backend_dotnet7.Core.Services
         #endregion
 
         #region GetMessagesAsync
-        public async Task<IEnumerable<GetMessageDto>> GetMessageAsync()
+        public async Task<IEnumerable<GetMessageDto>> GetMessagesAsync()
         {
             var messages = await _context.Messages
             .Select(q => new GetMessageDto()
@@ -87,7 +87,7 @@ namespace backend_dotnet7.Core.Services
         #endregion
 
         #region GetMyMessagesAsync
-        public async Task<IEnumerable<GetMessageDto>> GetMyMessageAsync(ClaimsPrincipal User)
+        public async Task<IEnumerable<GetMessageDto>> GetMyMessagesAsync(ClaimsPrincipal User)
         {
             var loggedInUser = User.Identity.Name;
 
