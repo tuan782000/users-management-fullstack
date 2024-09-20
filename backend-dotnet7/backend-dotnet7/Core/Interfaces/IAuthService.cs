@@ -13,10 +13,10 @@ namespace backend_dotnet7.Core.Interfaces
         Task<GeneralServiceResponseDto>SeedRolesAsync();        
         Task<GeneralServiceResponseDto>RegisterAsync(RegisterDto registerDto);
         Task<LoginServiceResponseDto?>LoginAsync(LoginDto loginDto);
-        Task<GeneralServiceResponseDto>UpdateRolesAsync(ClaimsPrincipal User, UpdateRoleDto updateRoleDto);
+        Task<GeneralServiceResponseDto>UpdateRoleAsync(ClaimsPrincipal User, UpdateRoleDto updateRoleDto);
         Task<LoginServiceResponseDto?>MeAsync(MeDto meDto);
         Task<IEnumerable<UserInfoResult>> GetUsersListAsync();
         Task<UserInfoResult> GetUserDetailsByUserNameAsync(string userName);
-        Task<IEnumerable<string>> GetUsernameListAsync();
+        Task<IEnumerable<string>> GetUsernamesListAsync();
     }
 }

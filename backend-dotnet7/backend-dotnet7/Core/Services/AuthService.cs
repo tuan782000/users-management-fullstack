@@ -158,7 +158,7 @@ namespace backend_dotnet7.Core.Services
 
         #region UpdateRoleAsync
 
-        public async Task<GeneralServiceResponseDto> UpdateRolesAsync(ClaimsPrincipal User, UpdateRoleDto updateRoleDto)
+        public async Task<GeneralServiceResponseDto> UpdateRoleAsync(ClaimsPrincipal User, UpdateRoleDto updateRoleDto)
         {
             //find User with username
             var user = await _userManager.FindByNameAsync(updateRoleDto.UserName);
@@ -330,7 +330,7 @@ namespace backend_dotnet7.Core.Services
         #endregion
 
         #region GetUsernamesListAsync
-        public async Task<IEnumerable<string>> GetUsernameListAsync()
+        public async Task<IEnumerable<string>> GetUsernamesListAsync()
         {
              var userNames = await _userManager.Users
             .Select(q => q.UserName)
