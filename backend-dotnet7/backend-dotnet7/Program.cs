@@ -29,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+// đã làm ở đây - đăng ký IMessageService, MessageService và IAuthService, AuthService
 // Add Indetity
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()
