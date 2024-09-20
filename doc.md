@@ -853,7 +853,7 @@ Chưa có cài đặt chi tiết cho phương thức này.
 
 Đang sử dụng cú pháp linq
 
-#
+# Message
 
 // Dependency Injection này gọi là DI quản lý và cung cấp các đối tượng
 builder.Services.AddScoped<ILogService, LogService>();
@@ -938,3 +938,137 @@ LogService sẽ ánh xạ và viết ra đầy đủ các bước mà tính năn
     new GetMessageDto() có nghĩa là bạn đang tạo một đối tượng mới thuộc kiểu GetMessageDto. Sau khi tạo, bạn gán các giá trị từ đối tượng q (đại diện cho một bản ghi từ bảng Messages trong cơ sở dữ liệu) vào các thuộc tính tương ứng của đối tượng GetMessageDto này (như Id, SenderUserName, ReceiverUserName, Text, và CreatedAt).
 
     Tóm lại, new trong ngữ cảnh này dùng để tạo một thể hiện mới của lớp GetMessageDto để chứa dữ liệu tin nhắn.
+
+# Auth Service
+
+Tạo token
+
+```c#
+#region GenerateJWTTokenAsync
+        private async Task<string> GenerateJWTTokenAsync(ApplicationUser user)
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim("FirstName", user.FirstName),
+            new Claim("LastName", user.LastName),
+        };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var signingCredentials = new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256);
+
+            var tokenObject = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                notBefore: DateTime.Now,
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: signingCredentials
+                );
+
+            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
+            return token;
+        }
+        #endregion
+```
+
+GenerateJWTTokenAsync dùng để tạo ra một JSON Web Token (JWT) cho người dùng (ApplicationUser). JWT là một chuẩn mở để truyền tải thông tin giữa các bên dưới dạng JSON, bảo mật thông qua chữ ký (signature).
+
+```c#
+var authClaims = new List<Claim>
+{
+    new Claim(ClaimTypes.Name, user.UserName),
+    new Claim(ClaimTypes.NameIdentifier, user.Id),
+    new Claim("FirstName", user.FirstName),
+    new Claim("LastName", user.LastName),
+};
+```
+
+Claim: Là những thông tin về người dùng được đưa vào token. Các claim này có thể là tên, ID, vai trò, hoặc các thông tin tùy chỉnh khác.
+Danh sách authClaims này chứa các thông tin như:
+Tên đăng nhập (ClaimTypes.Name)
+ID người dùng (ClaimTypes.NameIdentifier)
+Tên và họ của người dùng ("FirstName", "LastName").
+
+Thêm vai trò (Roles) vào Claims
+
+```c#
+var userRoles = await _userManager.GetRolesAsync(user);
+
+foreach (var userRole in userRoles)
+{
+    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+}
+
+```
+
+GetRolesAsync(user): Lấy danh sách các vai trò mà người dùng có.
+
+Sau đó, thêm mỗi vai trò (role) của người dùng vào danh sách authClaims với ClaimTypes.Role.
+
+Tạo khóa bảo mật (Secret Key) và Signing Credentials
+
+```c#
+var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+var signingCredentials = new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256);
+
+```
+
+authSecret: Tạo khóa bảo mật (symmetric key) từ chuỗi bí mật được lưu trong cấu hình (\_configuration["JWT:Secret"]).
+
+Chuỗi này được dùng để mã hóa và xác thực token, đảm bảo chỉ những ai có khóa bí mật mới có thể tạo hoặc xác thực JWT.
+
+signingCredentials: Chữ ký số sử dụng thuật toán HmacSha256 cùng với khóa bảo mật authSecret. Điều này giúp đảm bảo rằng JWT không thể bị giả mạo.
+
+Tạo đối tượng JWT
+
+```c#
+var tokenObject = new JwtSecurityToken(
+    issuer: _configuration["JWT:ValidIssuer"],
+    audience: _configuration["JWT:ValidAudience"],
+    notBefore: DateTime.Now,
+    expires: DateTime.Now.AddHours(3),
+    claims: authClaims,
+    signingCredentials: signingCredentials
+);
+
+```
+
+JwtSecurityToken: Là đối tượng đại diện cho một JWT.
+
+Các tham số quan trọng:
+issuer: Định danh của bên phát hành token (thường là server hoặc ứng dụng của bạn).
+audience: Định danh của bên nhận token (có thể là client hoặc service khác).
+notBefore: Token sẽ không hợp lệ trước thời gian này (thời gian hiện tại).
+expires: Token sẽ hết hạn sau 3 giờ kể từ khi được phát hành.
+claims: Danh sách các thông tin (claims) đã tạo trước đó.
+signingCredentials: Chữ ký số dùng để ký token nhằm bảo mật.
+
+Chuyển JWT thành chuỗi trả về
+
+```c#
+string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
+return token;
+
+```
+
+JwtSecurityTokenHandler.WriteToken: Chuyển đối tượng JwtSecurityToken thành một chuỗi JWT.
+
+Cuối cùng, chuỗi JWT này được trả về và có thể được sử dụng cho người dùng để thực hiện các yêu cầu bảo mật (authentication) tới hệ thống.
+
+Tóm lại:
+Phương thức GenerateJWTTokenAsync tạo một JWT cho người dùng dựa trên:
+
+Các thông tin cơ bản của người dùng (tên đăng nhập, ID, tên, họ).
+
+Các vai trò của người dùng.
+
+Token này sẽ có thời hạn sử dụng là 3 giờ và được bảo mật bằng khóa bí mật và thuật toán HmacSha256.
