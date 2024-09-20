@@ -1199,3 +1199,34 @@ namespace backend_dotnet7.Controllers
 ```
 
 # Implement Message Controller
+
+# Test chức năng
+
+/api/Auth/seed-roles
+
+Route("seed-roles") - Tạo ra các roles trong Database - 4 role được tạo ra
+
+1 Message trả về "Roles Seeding Done Successfully"
+
+---
+
+/api/Auth/register
+
+Route("register") - Thử đăng ký 1 user mới
+
+Đăng ký user truyền vào form - Request body
+
+{
+"firstName": "string",
+"lastName": "string",
+"userName": "string",
+"email": "string",
+"password": "string",
+"address": "string"
+}
+
+Kết quả tạo ra thành công:
+
+201 Response body
+
+User Created Successfully

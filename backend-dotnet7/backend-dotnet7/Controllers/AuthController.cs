@@ -20,7 +20,7 @@ namespace backend_dotnet7.Controllers
             _authService = authService;
         }
 
-        // Route -> Seed Roles to DB
+        // Route -> Seed Roles to DB -> Tạo ra các role
         [HttpPost]
         [Route("seed-roles")]
         public async Task<IActionResult> SeedRoles() {
