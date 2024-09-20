@@ -1072,3 +1072,77 @@ Các thông tin cơ bản của người dùng (tên đăng nhập, ID, tên, h�
 Các vai trò của người dùng.
 
 Token này sẽ có thời hạn sử dụng là 3 giờ và được bảo mật bằng khóa bí mật và thuật toán HmacSha256.
+
+**Xem thêm comment bên trong code**
+
+# Cấu hình thử controller của testController
+
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using backend_dotnet7.Core.Constants;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+
+namespace backend_dotnet7.Controllers
+{
+    // Phương Thức (GET/POST/PUT/DELETE) api/(TestsController -> bỏ Controller -> Tests)/(Route)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TestsController : ControllerBase
+    {
+        [HttpGet]
+        [Route("get-public")]
+        public IActionResult GetPublicData() {
+            return Ok("Public Data");
+        }
+
+        [HttpGet]
+        [Route("get-user-role")]
+        [Authorize(Roles = StaticUserRoles.USER)]
+        public IActionResult GetUserData() {
+            return Ok("User role data");
+        }
+
+        [HttpGet]
+        [Route("get-manager-role")]
+        [Authorize(Roles = StaticUserRoles.MANAGER)]
+        public IActionResult GetManagerData() {
+            return Ok("Manager role data");
+        }
+
+        [HttpGet]
+        [Route("get-admin-role")]
+        [Authorize(Roles = StaticUserRoles.ADMIN)]
+        public IActionResult GetAdminData() {
+            return Ok("Admin role data");
+        }
+
+        [HttpGet]
+        [Route("get-owner-role")]
+        [Authorize(Roles = StaticUserRoles.OWNER)]
+        public IActionResult GetOwnerData() {
+            return Ok("Owner role data");
+        }
+    }
+}
+```
+
+http://localhost:5112/api/Tests/get-public
+
+Tên_miền/api/Tên_controller/route
+
+TestsController : ControllerBase
+
+-   TestsController kế thừa ControllerBase
+
+HttpGet: Định danh phương thức
+
+Route("get-public"): Cái này route
+
+Nếu tính năng có yêu cầu quyền (role) thì dùng Authorize (StaticUserRoles tham chiếu vào để lấy ra role)
+
+-   Nếu bạn không có role thì chặn 401 Undocumented Error: Unauthorized
